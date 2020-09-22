@@ -1,0 +1,14 @@
+---
+- name: Include variables
+  include_vars:
+    file: ../../vars.yml
+
+- name: Git Clone AWX
+  become: yes
+  git:
+    repo: "{{ awx_git }}"
+    dest: "{{ awx_save_location }}"
+
+- name: Install AWX
+  become: yes
+  command: ansible-playbook -i "{{ awx_save_location }}/installer/inventory" "{{ awx_save_location }}/installer/install.yml"

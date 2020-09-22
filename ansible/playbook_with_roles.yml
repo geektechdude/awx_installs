@@ -1,0 +1,50 @@
+---
+- hosts: all
+  gather_facts: yes
+
+  vars_files:
+    - vars.yml
+
+  pre_tasks:
+    - name: update apt cache if needed
+      become: yes
+      apt:
+        update_cache=yes
+        cache_valid_time=3600
+      when: ansible_facts['distribution']=="Ubuntu"
+
+    - name: update yum cache if needed
+      become: yes
+      yum:
+        update_cache=yes
+      when: ansible_facts['distribution']=="CentOS"
+
+  tasks:
+
+    - name: Install EPEL (CentOS)
+      become: yes
+      yum:
+       name: epel-release
+       state: present
+      when: ansible_facts['distribution']=="CentOS"
+
+    - name: Install Pre-Req Packages (CentOS)
+      become: yes
+      yum:
+       name: "{{ packages }}"
+       state: present
+      when: ansible_facts['distribution']=="CentOS"
+    
+    - name: Install Pre-Req Packages (Ubuntu)
+      become: yes
+      apt:
+       name: "{{ packages }}"
+       state: present
+      when: ansible_facts['distribution']=="Ubuntu"
+    
+- hosts: all  
+  roles:
+    - docker
+    - awx
+
+

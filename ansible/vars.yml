@@ -1,0 +1,29 @@
+---
+# Variables for use with AWX Playbook
+
+# Docker Repository URLs
+centos_docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
+
+# CentOS Docker Version
+centos_docker: docker-ce
+
+# Docker User
+docker_user: vagrant
+
+packages:
+  - git
+  - gcc
+  - gcc-c++
+  - ansible
+  - nodejs
+  - gettext
+  - device-mapper-persistent-data
+  - lvm2
+  - bzip2
+  - python3-pip
+
+# AWX Git Repo Address
+awx_git: https://github.com/ansible/awx.git
+
+# Location To Save The Git Repo
+awx_save_location: /srv/awx

@@ -1,0 +1,46 @@
+---
+- name: Include variables
+  include_vars:
+    file: ../../vars.yml
+
+- name: Add Docker Repository
+  become: yes
+  get_url:
+    url: "{{ centos_docker_repo }}"
+    dest: /etc/yum.repos.d/docker-ce.repo
+
+# - name: Add Docker Repository
+#   become: yes
+#   yum_repository:
+#     name: Docker_Repo
+#     description: Docker_Repository
+#     baseurl: "{{ centos_docker_repo }}"
+#   when: ansible_facts['distribution']=="CentOS"
+
+- name: Install Docker
+  become: yes
+  yum:    
+    name: "{{ centos_docker }}"
+    state: present
+  when: ansible_facts['distribution']=="CentOS"
+
+- name: Add User To Docker Group
+  become: yes
+  user:
+    name: "{{ docker_user }}"
+    groups: docker
+    append: yes
+
+- name: Pip install Docker Compose
+  become: yes
+  command: pip3 install docker-compose
+
+- name: Start Docker Service
+  become: yes
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+
+
