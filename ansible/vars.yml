@@ -21,6 +21,7 @@ packages:
   - lvm2
   - bzip2
   - python3-pip
+  - libselinux-python3
 
 # AWX Git Repo Address
 awx_git: https://github.com/ansible/awx.git
